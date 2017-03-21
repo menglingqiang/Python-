@@ -1,7 +1,7 @@
 import webbrowser
 import os
 import re
-
+#re 是正则表达式
 
 # Styles and scripting for the page
 main_page_head = '''
