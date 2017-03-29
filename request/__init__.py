@@ -1,47 +1,24 @@
 import requests
 import re
- 
-def getHTMLText(url):
-    try:
-        r = requests.get(url, timeout=30)
-        r.raise_for_status()
-        r.encoding = r.apparent_encoding
-        return r.text
-    except:
-        return ""
-     
-def parsePage(ilt, html):
-    try:
-        plt = re.findall(r'\"view_price\":\"[\d\.]*\"',html)
-        tlt = re.findall(r'\"raw_title\":\".*?\"',html)
-        #plt = re.findall(r'\"view_price\":\"\"',html)
-        for i in range(len(plt)):
-            price = eval(plt[i].split(':')[1])
-            title = eval(tlt[i].split(':')[1])
-            ilt.append([price , title])
-    except:
-        print("")
- 
-def printGoodsList(ilt):
-    tplt = "{:4}\t{:8}\t{:16}"
-    print(tplt.format("序号", "价格", "商品名称"))
-    count = 0
-    for g in ilt:
-        count = count + 1
-        print(tplt.format(count, g[0], g[1]))
-         
-def main():
-    goods = '跑鞋'
-    depth = 2
-    start_url = 'https://s.taobao.com/search?q=' + goods
-    infoList = []
-    for i in range(depth):
-        try:
-            url = start_url + '&s=' + str(44*i)
-            html = getHTMLText(url)
-            parsePage(infoList, html)
-        except:
-            continue
-    printGoodsList(infoList)
-     
-main()
+def choose_name(str):
+    p = re.compile(r'\n[\s]*(.*?)[\s]*\n')
+    p2 = re.compile(r'.*?[(]')
+    m=p.match(str)
+    name1 = m.group(0).strip()#获得 东方财富(34344)
+    m2=p2.match(name1)
+    name = m2.group(0).strip()[0:m2.end()-1]
+    return name
+name = choose_name('\n      测试(4545)     \n')
+print(name)
+# name = '\n      测试(4545)     \n'
+# p=re.compile(r'\n[\s]*(.*?)[\s]*\n')
+# m=p.match(name)
+# temp=m.group(0).strip()
+# print(temp)
+# 
+# p2 = re.compile(r'.*?[(]')
+# m2=p2.match(temp)
+# test = m2.group(0).strip()[0:m2.end()-1]
+# print(test)
+#temp2=m2.group(0).strip()
+#print(temp2)
